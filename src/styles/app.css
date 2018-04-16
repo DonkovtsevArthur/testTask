@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+.app {
+    text-align: left;
+    & a {
+        color: red;
+        font-family: 'Roboto', sans-serif;
+    } 
+    & img {
+        width: 10%;
+    }
+    & .active {
+        color: blue;
+    }
+}
+
+::placeholder {
+  color: green; 
+}
