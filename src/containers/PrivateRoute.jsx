@@ -11,6 +11,9 @@ class PrivateRoute extends Component {
   state = {
     isOpen: false
   };
+  componentWillMount() {
+    this.componentDidMount();
+  }
 
   componentDidMount() {
     let login = window.localStorage.getItem("login");
@@ -27,7 +30,7 @@ class PrivateRoute extends Component {
     const { component: Profile, isOpens, ...rest } = this.props;
 
     const { isOpen } = this.state;
-    
+
     return (
       <Route
         path={rest.path}
