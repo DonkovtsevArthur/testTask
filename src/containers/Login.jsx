@@ -11,16 +11,16 @@ class Login extends Component {
     checkForm: true,
     message: ""
   };
-  handleLogin = e => {
-    this.setState({
-      login: e.target.value
-    });
+  handleAthu = e => {
+    const value = e.target.value;
+    const setName = e.target.dataset.getName;
+
+    this.setState(prev => ({
+      ...prev,
+      [setName]: value
+    }));
   };
-  handlePassword = e => {
-    this.setState({
-      password: e.target.value
-    });
-  };
+
   handleSubmit = e => {
     e.preventDefault();
 
@@ -35,7 +35,7 @@ class Login extends Component {
       this.setState({ isRedirect: true });
     } else {
       this.setState({
-        message: "Неправильно введен логин или пароль",
+        message: "Неправильно введён логин или пароль",
         checkForm: false
       });
     }
@@ -58,16 +58,18 @@ class Login extends Component {
             <div>
               <input
                 type="text"
+                data-get-name={"login"}
                 value={this.state.login}
-                onChange={this.handleLogin}
+                onChange={this.handleAthu}
                 placeholder="Введите логин"
               />
             </div>
             <div>
               <input
+                data-get-name={"password"}
                 type="password"
                 value={this.state.password}
-                onChange={this.handlePassword}
+                onChange={this.handleAthu}
                 placeholder="Введите пароль"
               />
             </div>

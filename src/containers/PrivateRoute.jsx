@@ -17,7 +17,7 @@ class PrivateRoute extends Component {
 
   componentDidMount() {
     let login = window.localStorage.getItem("login");
-    let password = +window.localStorage.getItem("password");
+    let password = window.localStorage.getItem("password");
 
     if (login === this.props.login && password === this.props.password) {
       this.setState({
