@@ -84,7 +84,7 @@ class Login extends Component {
   }
 }
 
-const mapStateProps = state => state;
+const mapStateProps = state => ({});
 
 // Login.propTypes = {
 //   login: PropTypes.string.isRequired,
