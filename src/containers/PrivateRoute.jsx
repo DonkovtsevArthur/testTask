@@ -18,7 +18,7 @@ class PrivateRoute extends Component {
   componentDidMount() {
     let login = window.localStorage.getItem("login");
     let password = window.localStorage.getItem("password");
-
+    this.props.onGetOpen(login);
     this.setState({ isOpen: Ath(login, password) });
   }
 
@@ -55,4 +55,15 @@ PrivateRoute.propTypes = {
   password: PropTypes.number
 };
 
-export default withRouter(connect(mapStateProps)(PrivateRoute));
+
+const mapDispatchToProps = dispath => ({
+  onGetOpen: name => {
+    dispath({ type: "ADD_ISLOGIN", payload: name });
+  }
+});
+
+
+
+export default withRouter(
+  connect(mapStateProps, mapDispatchToProps)(PrivateRoute)
+);

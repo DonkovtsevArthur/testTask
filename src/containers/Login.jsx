@@ -30,7 +30,6 @@ class Login extends Component {
     const logIn = Ath(this.state.login, this.state.password);
 
     if (logIn) {
-      this.props.onGetOpen( window.localStorage.getItem("login"));
       this.setState({ isRedirect: true });
     } else {
       this.setState({
@@ -86,15 +85,10 @@ class Login extends Component {
 
 const mapStateProps = state => ({});
 
-const mapDispatchToProps = dispath => ({
-  onGetOpen: name => {
-    dispath({ type: "ADD_ISLOGIN", payload: name });
-  }
-});
 
 // Login.propTypes = {
 //   login: PropTypes.string.isRequired,
 //   password: PropTypes.number.isRequired
 // };
 
-export default withRouter(connect(mapStateProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateProps)(Login));
