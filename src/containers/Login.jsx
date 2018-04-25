@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
+import { Ath } from "../actions";
 
 class Login extends Component {
   state = {
@@ -24,14 +27,10 @@ class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    window.localStorage.setItem("login", this.state.login);
-    window.localStorage.setItem("password", this.state.password);
+    const logIn = Ath(this.state.login, this.state.password);
 
-    if (
-      this.state.login === this.props.login &&
-      +this.state.password === +this.props.password
-    ) {
-      this.props.onGetOpen(true);
+    if (logIn) {
+      this.props.onGetOpen(this.state.login);
       this.setState({ isRedirect: true });
     } else {
       this.setState({
@@ -41,7 +40,6 @@ class Login extends Component {
     }
   };
   render() {
-    console.log(this.props.data);
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
     };
@@ -86,14 +84,17 @@ class Login extends Component {
   }
 }
 
-const mapStateProps = state => ({
-  login: state.addOpen.data.login,
-  password: state.addOpen.data.password
-});
+const mapStateProps = state => state;
+
+// Login.propTypes = {
+//   login: PropTypes.string.isRequired,
+//   password: PropTypes.number.isRequired
+// };
+
 export default withRouter(
   connect(mapStateProps, dispath => ({
-    onGetOpen: boolean => {
-      dispath({ type: "ADD_ISOPEN", payload: boolean });
+    onGetOpen: nameuser => {
+      dispath({ type: "ADD_ISLOGIN", payload: nameuser });
     }
   }))(Login)
 );

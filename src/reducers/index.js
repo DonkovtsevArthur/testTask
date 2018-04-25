@@ -3,10 +3,10 @@ import { routerReducer } from 'react-router-redux';
 
 
 
-import addOpen from "./addOpen";
+import addLogin from "./addLogin";
 
 
 export default combineReducers({
     routing: routerReducer,
-    addOpen
+    addLogin
 });

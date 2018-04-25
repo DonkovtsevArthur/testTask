@@ -1,1 +1,1 @@
-export const ADD_ISOPEN = 'ADD_ISOPEN';
+export const ADD_ISLOGIN = 'ADD_ISLOGIN';

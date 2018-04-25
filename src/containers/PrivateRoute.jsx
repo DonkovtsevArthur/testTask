@@ -1,16 +1,16 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-const data = {
-  login: "Admin",
-  password: 12345
-};
+import { Ath } from "../actions";
 
 class PrivateRoute extends Component {
   state = {
     isOpen: false
   };
+
   componentWillMount() {
     this.componentDidMount();
   }
@@ -19,16 +19,12 @@ class PrivateRoute extends Component {
     let login = window.localStorage.getItem("login");
     let password = window.localStorage.getItem("password");
 
-    if (login === this.props.login && password === this.props.password) {
-      this.setState({
-        isOpen: true
-      });
-    }
+    this.setState({ isOpen: Ath(login, password) });
   }
 
   render() {
-    const { component: Profile, isOpens, ...rest } = this.props;
-
+    const { component: Profile, nameUser, ...rest } = this.props;
+   
     const { isOpen } = this.state;
 
     return (
@@ -38,9 +34,9 @@ class PrivateRoute extends Component {
           (isOpen ? (
             isOpen
           ) : (
-            isOpens
+            isOpen
           )) ? (
-            <Profile {...props} />
+            <Profile nameUser={nameUser} />
           ) : (
             <Redirect to={{ pathname: "/login" }} />
           )
@@ -51,9 +47,12 @@ class PrivateRoute extends Component {
 }
 
 const mapStateProps = state => ({
-  isOpens: state.addOpen.isOpen,
-  login: state.addOpen.data.login,
-  password: state.addOpen.data.password
+  nameUser: state.addLogin.username
 });
+
+PrivateRoute.propTypes = {
+  login: PropTypes.string,
+  password: PropTypes.number
+};
 
 export default withRouter(connect(mapStateProps)(PrivateRoute));
