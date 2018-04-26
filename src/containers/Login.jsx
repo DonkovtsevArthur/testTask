@@ -73,10 +73,10 @@ class Login extends Component {
             <input type="submit" />
           </form>
         ) : (
-          <div>
+          <React.Fragment>
             <p>{this.state.message}</p>
             <Link to="/profile"> Log in</Link>
-          </div>
+          </React.Fragment>
         )}
       </div>
     );

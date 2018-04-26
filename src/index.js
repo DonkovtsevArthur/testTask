@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
@@ -12,6 +12,11 @@ import reducer from "./reducers/";
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
-render(<App store={store} />, document.getElementById("app"));
+render(
+  <MuiThemeProvider>
+    <App store={store} />
+  </MuiThemeProvider>,
+  document.getElementById("app")
+);
 
 module.hot.accept();

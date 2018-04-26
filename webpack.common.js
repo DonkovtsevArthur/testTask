@@ -64,6 +64,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
+      inject: false,
+      hash: true,
       template: "src/index.html",
       title: "React"
     }),

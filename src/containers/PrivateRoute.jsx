@@ -6,6 +6,7 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 
 import { Ath } from "../actions";
 
+
 class PrivateRoute extends Component {
   state = {
     isOpen: false
@@ -36,6 +37,7 @@ class PrivateRoute extends Component {
           ) : (
             isOpen
           )) ? (
+            
             <Profile nameUser={nameUser} />
           ) : (
             <Redirect to={{ pathname: "/login" }} />
