@@ -1,32 +1,36 @@
 import React, { Component } from "react";
 import { CircularProgress } from "material-ui";
 
+import axios from "axios";
+
 const newsLi = {
   listStyleType: "none",
-  border: '1px solid grey',
-  margin: '10px',
-  padding: '5px'
+  border: "1px solid grey",
+  margin: "10px",
+  padding: "5px"
 };
 const span = {
-  fontSize: '10px'
-}
+  fontSize: "10px"
+};
 class News extends Component {
   state = {
     newsContent: [],
     isLoader: true
   };
-  getDate = (x) => {
+  getDate = x => {
     let ms = Date.parse(x);
     let data = new Date(ms);
     return data.toString();
-  }
+  };
   componentDidMount() {
-    fetch(
-      `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=f27a310263b64558b8340273039cb4b3`
-    )
-      .then(res => res.json())
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=f27a310263b64558b8340273039cb4b3`;
+    axios
+      .get(url)
       .then(el => {
-        this.setState({ newsContent: el.articles, isLoader: false });
+        this.setState({
+          newsContent: el.data.articles,
+          isLoader: false
+        });
       });
   }
 
@@ -36,12 +40,14 @@ class News extends Component {
   render() {
     const { newsContent, isLoader } = this.state;
 
-   // console.log( newsContent );
-
-    return <div>
-        {isLoader ? <div>
+    return (
+      <div>
+        {isLoader ? (
+          <div>
             <CircularProgress />
-          </div> : <ul>
+          </div>
+        ) : (
+          <ul>
             {newsContent.map((item, index) => (
               <li style={newsLi} key={index}>
                 <img src={item.urlToImage} alt={item.autor} />
@@ -52,8 +58,10 @@ class News extends Component {
                 <a href={item.url}>подробнее...</a>
               </li>
             ))}
-          </ul>}
-      </div>;
+          </ul>
+        )}
+      </div>
+    );
   }
 }
 
