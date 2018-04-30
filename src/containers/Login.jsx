@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { connect } from "react-redux";
+
+
 import PropTypes from "prop-types";
 
 import { Ath } from "../actions";
@@ -59,6 +61,7 @@ class Login extends Component {
                 value={this.state.login}
                 onChange={this.handleAthu}
                 placeholder="Введите email"
+                
               />
             </div>
             <div>
