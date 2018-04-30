@@ -54,11 +54,11 @@ class Login extends Component {
           <form onSubmit={this.handleSubmit}>
             <div>
               <input
-                type="text"
+                type="email"
                 data-get-name={"login"}
                 value={this.state.login}
                 onChange={this.handleAthu}
-                placeholder="Введите логин"
+                placeholder="Введите email"
               />
             </div>
             <div>
@@ -86,9 +86,9 @@ class Login extends Component {
 const mapStateProps = state => ({});
 
 
-// Login.propTypes = {
-//   login: PropTypes.string.isRequired,
-//   password: PropTypes.number.isRequired
-// };
+Login.propTypes = {
+  login: PropTypes.string.isRequired,
+  password: PropTypes.number.isRequired
+};
 
 export default withRouter(connect(mapStateProps)(Login));

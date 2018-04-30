@@ -24,14 +24,12 @@ class News extends Component {
   };
   componentDidMount() {
     const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=f27a310263b64558b8340273039cb4b3`;
-    axios
-      .get(url)
-      .then(el => {
-        this.setState({
-          newsContent: el.data.articles,
-          isLoader: false
-        });
+    axios.get(url).then(el => {
+      this.setState({
+        newsContent: el.data.articles,
+        isLoader: false
       });
+    });
   }
 
   componentWillUnmount() {
@@ -47,7 +45,7 @@ class News extends Component {
             <CircularProgress />
           </div>
         ) : (
-          <ul>
+          <ul style={{ paddingLeft: "0px" }}>
             {newsContent.map((item, index) => (
               <li style={newsLi} key={index}>
                 <img src={item.urlToImage} alt={item.autor} />
