@@ -1,16 +1,26 @@
 import * as type from "../constants/ActionTypes";
 
-
 const initialState = {
-  city: '',
+  city: "",
   languages: [],
-  social: []
+  social: [],
+  message: "",
+  isOpenUserInfo: false
 };
 
-
 export default function getUserInfo(state = initialState, action) {
-  if (action.type === type.GET_USER_INFO) {
-    return { ...state, city: action.city, languages: action.languages, social: action.social };
+  switch (action.type) {
+    case type.GET_USER_INFO:
+      return {
+        ...state,
+        city: action.city,
+        languages: action.languages,
+        social: action.social
+      };
+    case type.GET_USER_INFO_ERROR:
+      return { ...state, message: action.error, isOpenUserInfo: true };
+
+    default:
+      return state;
   }
-  return state;
 }

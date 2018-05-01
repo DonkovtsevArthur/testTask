@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
@@ -13,7 +12,7 @@ class PrivateRoute extends Component {
     return (
       <Route
         {...rest}
-        render={()=>
+        render={() =>
           this.props.isOpen ? (
             <Profile id={this.props.id} />
           ) : (
@@ -26,8 +25,8 @@ class PrivateRoute extends Component {
 }
 
 const mapStateProps = state => ({
-  isOpen: state.addLogin.isOpen,
-  id: state.addLogin.id
+  isOpen: state.getLogin.isOpen,
+  id: state.getLogin.id
 });
 
 PrivateRoute.propTypes = {

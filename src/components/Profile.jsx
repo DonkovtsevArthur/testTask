@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
 import axios from "axios";
 
 class Profile extends Component {
@@ -12,30 +11,41 @@ class Profile extends Component {
     const url = `https://mysterious-reef-29460.herokuapp.com/api/v1/user-info/${id}`;
     axios
       .get(url)
-      .then(res =>
-        this.props.onGetInfo(
-          res.data.data.city,
-          res.data.data.languages,
-          res.data.data.social
-        )
-      )
+      .then(res => {
+        const { status, message } = res.data;
+        if (status === "ok") {
+          const { city, languages, social } = res.data.data;
+          this.props.onGetInfo(city, languages, social);
+        } else {
+          this.props.onGetInfoError(message);
+        }
+      })
       .catch(e => console.log(e));
   };
 
   render() {
     return (
       <div>
-        <h2>Город: {this.props.city}</h2>
-        <ul>
-          {this.props.languages.map((item, i) => <li key={i}>{item}</li>)}
-        </ul>
-        <div style={{ display: "grid" }}>
-          {this.props.social.map((item, i) => (
-            <a key={i} href={item.link}>
-              {item.label}
-            </a>
-          ))}
-        </div>
+        {this.props.isOpenUserInfo ? (
+          <React.Fragment>
+            {" "}
+            <p>{this.props.message}</p>{" "}
+          </React.Fragment>
+        ) : (
+          <div>
+            <h2>Город: {this.props.city}</h2>
+            <ul>
+              {this.props.languages.map((item, i) => <li key={i}>{item}</li>)}
+            </ul>
+            <div style={{ display: "grid" }}>
+              {this.props.social.map((item, i) => (
+                <a key={i} href={item.link}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -44,7 +54,9 @@ class Profile extends Component {
 const mapStateProps = state => ({
   city: state.getUserInfo.city,
   languages: state.getUserInfo.languages,
-  social: state.getUserInfo.social
+  social: state.getUserInfo.social,
+  message: state.getUserInfo.message,
+  isOpenUserInfo: state.getUserInfo.isOpenUserInfo
 });
 
 const mapDispatchProps = dispatch => ({
@@ -55,6 +67,9 @@ const mapDispatchProps = dispatch => ({
       languages,
       social
     });
+  },
+  onGetInfoError: error => {
+    dispatch({ type: "GET_USER_INFO_ERROR", error });
   }
 });
 

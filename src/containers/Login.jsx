@@ -9,8 +9,8 @@ import axios from "axios";
 
 class Login extends Component {
   state = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     isLoader: true,
     isRedirect: false
   };
@@ -31,22 +31,22 @@ class Login extends Component {
       .then(res => {
         const { data, status, message } = res.data;
         if (status === "ok") {
-          this.props.onGetLogin(data.id)
-          this.setState({ isLoader: false });
-
+          this.props.onGetLogin(data.id);
+          this.setState({ isLoader: false});
         } else {
           this.props.onGetError(message);
+          this.setState({ isRedirect: false});
         }
       })
       .catch(e => console.log(e));
   };
+  
   handleSubmit = e => {
     e.preventDefault();
     this.setState({ isRedirect: true });
-    this.getUserLogin()
-    
+    this.getUserLogin();
   };
- 
+
   render() {
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
@@ -64,7 +64,7 @@ class Login extends Component {
         {this.props.isOpenForm ? (
           <React.Fragment>
             <p>{this.props.message}</p>
-            <Link to="/profile">Log in</Link>
+            <Link onClick={() => this.props.onOut() } to="/profile">Log in</Link>
           </React.Fragment>
         ) : (
           <form onSubmit={this.handleSubmit}>
@@ -95,15 +95,19 @@ class Login extends Component {
 }
 
 const mapStateProps = state => ({
-  isOpenForm: state.addLogin.isOpenForm,
-  message: state.addLogin.message
+  isOpenForm: state.getLogin.isOpenForm,
+  message: state.getLogin.message
 });
+
 const mapDispatchProps = dispatch => ({
   onGetLogin: id => {
     dispatch({ type: "ADD_ISLOGIN", payload: id });
   },
   onGetError: error => {
     dispatch({ type: "ERR_IN_LOGIN", payload: error });
+  },
+  onOut: () => {
+    dispatch({type: "OUT_IN_LOGIN"});
   }
 });
 

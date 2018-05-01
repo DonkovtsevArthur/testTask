@@ -3,12 +3,12 @@ import { routerReducer } from 'react-router-redux';
 
 
 
-import addLogin from "./addLogin";
+import getLogin from "./getLogin";
 import getUserInfo from './getUserInfo';
 
 
 export default combineReducers({
     routing: routerReducer,
-    addLogin,
+    getLogin,
     getUserInfo
 });
