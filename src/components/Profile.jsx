@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import {
+  faVk,
+  faTelegram,
+  faYoutube,
+  faTwitter,
+  faTwitch,
+  faInternetExplorer
+} from "@fortawesome/fontawesome-free-brands";
+
 import axios from "axios";
 
 class Profile extends Component {
@@ -23,31 +34,43 @@ class Profile extends Component {
       .catch(e => console.log(e));
   };
 
+  getURL = url => {
+    return url.indexOf("http") !== 0 ? `https://${url}` : url;
+  };
+  getLabel = lab => {
+    return lab.indexOf("web") == 0 ? `internet-explorer` : lab;
+  };
   render() {
-    return (
-      <div>
-        {this.props.isOpenUserInfo ? (
-          <React.Fragment>
+    return <div>
+        {this.props.isOpenUserInfo ? <React.Fragment>
             {" "}
             <p>{this.props.message}</p>{" "}
-          </React.Fragment>
-        ) : (
-          <div>
-            <h2>Город: {this.props.city}</h2>
+          </React.Fragment> : <div>
+            Город: {this.props.city} <br />
+            Знание языков:
             <ul>
-              {this.props.languages.map((item, i) => <li key={i}>{item}</li>)}
+              {this.props.languages.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
             </ul>
-            <div style={{ display: "grid" }}>
+            <div>
+              Ссылки:
               {this.props.social.map((item, i) => (
-                <a key={i} href={item.link}>
-                  {item.label}
+                <a
+                  style={{ margin: "2px" }}
+                key={i}
+                  href={this.getURL(item.link)}
+                  target="_blank"
+                >
+                  {console.log(item.label)}
+                  <FontAwesomeIcon
+                    icon={["fab", `${this.getLabel(item.label)}`]}
+                  />
                 </a>
               ))}
             </div>
-          </div>
-        )}
-      </div>
-    );
+          </div>}
+      </div>;
   }
 }
 
