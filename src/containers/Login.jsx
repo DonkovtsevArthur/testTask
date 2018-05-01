@@ -2,19 +2,17 @@ import React, { Component } from "react";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { connect } from "react-redux";
-
-
+import { CircularProgress } from "material-ui";
 import PropTypes from "prop-types";
-
-import { Ath } from "../actions";
+import axios from "axios";
+// import { Ath } from "../actions";
 
 class Login extends Component {
   state = {
-    login: "",
+    email: "",
     password: "",
-    isRedirect: false,
-    checkForm: true,
-    message: ""
+    isLoader: true,
+    isRedirect: false
   };
   handleAthu = e => {
     const value = e.target.value;
@@ -25,43 +23,58 @@ class Login extends Component {
       [setName]: value
     }));
   };
+  getUserLogin = () => {
+    const { email, password } = this.state;
+    const url = "https://mysterious-reef-29460.herokuapp.com/api/v1/validate";
+    axios
+      .post(url, { email, password })
+      .then(res => {
+        const { data, status, message } = res.data;
+        if (status === "ok") {
+          this.props.onGetLogin(data.id)
+          this.setState({ isLoader: false });
 
+        } else {
+          this.props.onGetError(message);
+        }
+      })
+      .catch(e => console.log(e));
+  };
   handleSubmit = e => {
     e.preventDefault();
-
-    const logIn = Ath(this.state.login, this.state.password);
-
-    if (logIn) {
-      this.setState({ isRedirect: true });
-    } else {
-      this.setState({
-        message: "Неправильно введён логин или пароль",
-        checkForm: false
-      });
-    }
+    this.setState({ isRedirect: true });
+    this.getUserLogin()
+    
   };
+ 
   render() {
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
     };
 
-    const { isRedirect } = this.state;
+    const { isRedirect, isLoader } = this.state;
 
     if (isRedirect) {
-      return <Redirect to={from} />;
+      return (
+        <div>{isLoader ? <CircularProgress /> : <Redirect to={from} />}</div>
+      );
     }
     return (
       <div>
-        {this.state.checkForm ? (
+        {this.props.isOpenForm ? (
+          <React.Fragment>
+            <p>{this.props.message}</p>
+            <Link to="/profile">Log in</Link>
+          </React.Fragment>
+        ) : (
           <form onSubmit={this.handleSubmit}>
             <div>
               <input
                 type="email"
-                data-get-name={"login"}
-                value={this.state.login}
+                data-get-name={"email"}
+                value={this.state.email}
                 onChange={this.handleAthu}
                 placeholder="Введите email"
-                
               />
             </div>
             <div>
@@ -75,23 +88,28 @@ class Login extends Component {
             </div>
             <input type="submit" />
           </form>
-        ) : (
-          <React.Fragment>
-            <p>{this.state.message}</p>
-            <Link to="/profile"> Log in</Link>
-          </React.Fragment>
         )}
       </div>
     );
   }
 }
 
-const mapStateProps = state => ({});
+const mapStateProps = state => ({
+  isOpenForm: state.addLogin.isOpenForm,
+  message: state.addLogin.message
+});
+const mapDispatchProps = dispatch => ({
+  onGetLogin: id => {
+    dispatch({ type: "ADD_ISLOGIN", payload: id });
+  },
+  onGetError: error => {
+    dispatch({ type: "ERR_IN_LOGIN", payload: error });
+  }
+});
 
+// Login.propTypes = {
+//   login: PropTypes.string.isRequired,
+//   password: PropTypes.number.isRequired
+// };
 
-Login.propTypes = {
-  login: PropTypes.string.isRequired,
-  password: PropTypes.number.isRequired
-};
-
-export default withRouter(connect(mapStateProps)(Login));
+export default withRouter(connect(mapStateProps, mapDispatchProps)(Login));

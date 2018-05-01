@@ -17,16 +17,12 @@ class News extends Component {
     newsContent: [],
     isLoader: true
   };
-  getDate = x => {
-    let ms = Date.parse(x);
-    let data = new Date(ms);
-    return data.toString();
-  };
+
   componentDidMount() {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=f27a310263b64558b8340273039cb4b3`;
+    const url = `https://mysterious-reef-29460.herokuapp.com/api/v1/news `;
     axios.get(url).then(el => {
       this.setState({
-        newsContent: el.data.articles,
+        newsContent: el.data.data,
         isLoader: false
       });
     });
@@ -37,29 +33,23 @@ class News extends Component {
   }
   render() {
     const { newsContent, isLoader } = this.state;
-
-    return (
-      <div>
-        {isLoader ? (
-          <div>
+    const sum = newsContent.length;
+    return <div>
+        {isLoader ? <div>
             <CircularProgress />
-          </div>
-        ) : (
-          <ul style={{ paddingLeft: "0px" }}>
-            {newsContent.map((item, index) => (
-              <li style={newsLi} key={index}>
-                <img src={item.urlToImage} alt={item.autor} />
-                <h2>{item.author}</h2>
-                <span style={span}>{this.getDate(item.publishedAt)}</span>
+          </div> : <div>
+            <span>Всего новостей: {sum}</span>
+            <ul style={{ paddingLeft: "0px" }}>
+              {newsContent.map((item, index) => (
+                <li style={newsLi} key={index}>
+                  <h2>{item.title}</h2>
 
-                <p>{item.title}.</p>
-                <a href={item.url}>подробнее...</a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
+                  <p>{item.title}.</p>
+                </li>
+              ))}
+            </ul>
+          </div>}
+      </div>;
   }
 }
 

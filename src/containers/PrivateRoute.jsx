@@ -4,41 +4,18 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-import { Ath } from "../actions";
-
+// import { Ath } from "../actions";
 
 class PrivateRoute extends Component {
-  state = {
-    isOpen: false
-  };
-
-  componentWillMount() {
-    this.componentDidMount();
-  }
-
-  componentDidMount() {
-    let login = window.localStorage.getItem("login");
-    let password = window.localStorage.getItem("password");
-    this.props.onGetOpen(login);
-    this.setState({ isOpen: Ath(login, password) });
-  }
-
   render() {
-    const { component: Profile, nameUser, ...rest } = this.props;
-   
-    const { isOpen } = this.state;
+    const { component: Profile, ...rest } = this.props;
 
     return (
       <Route
-        path={rest.path}
-        render={props =>
-          (isOpen ? (
-            isOpen
-          ) : (
-            isOpen
-          )) ? (
-            
-            <Profile nameUser={nameUser} />
+        {...rest}
+        render={()=>
+          this.props.isOpen ? (
+            <Profile id={this.props.id} />
           ) : (
             <Redirect to={{ pathname: "/login" }} />
           )
@@ -49,7 +26,8 @@ class PrivateRoute extends Component {
 }
 
 const mapStateProps = state => ({
-  nameUser: state.addLogin.username
+  isOpen: state.addLogin.isOpen,
+  id: state.addLogin.id
 });
 
 PrivateRoute.propTypes = {
@@ -57,14 +35,11 @@ PrivateRoute.propTypes = {
   password: PropTypes.number
 };
 
-
 const mapDispatchToProps = dispath => ({
   onGetOpen: name => {
     dispath({ type: "ADD_ISLOGIN", payload: name });
   }
 });
-
-
 
 export default withRouter(
   connect(mapStateProps, mapDispatchToProps)(PrivateRoute)
