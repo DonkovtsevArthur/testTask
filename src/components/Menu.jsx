@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
+
 const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px'  };
 
 const Menu = () => {
@@ -16,7 +17,10 @@ const Menu = () => {
       <li style={styleLink}>
         <NavLink to="/profile">Profile</NavLink>
       </li>
+      
     </ul>;
 };
+
+
 
 export default Menu;

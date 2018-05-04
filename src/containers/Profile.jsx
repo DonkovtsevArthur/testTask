@@ -47,15 +47,11 @@ class Profile extends Component {
       languages,
       social
     } = this.props;
-    return (
-      <div>
-        {isOpenUserInfo ? (
-          <React.Fragment>
+    return <div>
+        {isOpenUserInfo ? <React.Fragment>
             {" "}
             <p>{messageError}</p>{" "}
-          </React.Fragment>
-        ) : (
-          <div>
+          </React.Fragment> : <div>
             Город: {city} <br />
             Знание языков:
             <ul>{languages.map((item, i) => <li key={i}>{item}</li>)}</ul>
@@ -74,10 +70,8 @@ class Profile extends Component {
                 </a>
               ))}
             </div>
-          </div>
-        )}
-      </div>
-    );
+          </div>}
+      </div>;
   }
 }
 

@@ -61,24 +61,16 @@ class Login extends Component {
       );
     }
     return (
+  
       <div>
-        {isOpenForm ? (
-          <div>
+        {isOpenForm ? <div>
             <p>{messageError}</p>
             <Link onClick={() => onOut()} to="/profile">
               Log in
             </Link>
-          </div>
-        ) : (
-          <Form
-            onSubmit={this.handleSubmit}
-            email={email}
-            onChange={this.handleAthu}
-            password={password}
-          />
-        )}
+          </div> : <Form onSubmit={this.handleSubmit} email={email} onChange={this.handleAthu} password={password} />}
       </div>
-    );
+    )
   }
 }
 
