@@ -1,20 +1,13 @@
 import React, { Component } from "react";
-
-
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
-
 import { Provider } from "react-redux";
-
 import Menu from "./Menu";
 import News from "./News";
 import NotFound from "./NotFound";
 import Home from "./Home";
-
-import PrivateRoute from "../containers/PrivateRoute";
+import PrivateRoute from "./PrivateRoute";
+import Profile from "../containers/Profile";
 import Login from "../containers/Login";
-
-import Profile from "../components/Profile";
-
 import "../styles/app.css";
 
 const App = ({ store }) => {

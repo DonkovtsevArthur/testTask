@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { Redirect, withRouter, Link } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
 import { connect } from "react-redux";
 import { CircularProgress } from "material-ui";
 import PropTypes from "prop-types";
 import axios from "axios";
-// import { Ath } from "../actions";
+import PrivateRoute from "../components/PrivateRoute";
+import Form from "../components/Form";
 
 class Login extends Component {
   state = {
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     isLoader: true,
     isRedirect: false
   };
@@ -29,18 +29,18 @@ class Login extends Component {
     axios
       .post(url, { email, password })
       .then(res => {
-        const { data, status, message } = res.data;
+        const { data, status } = res.data;
         if (status === "ok") {
           this.props.onGetLogin(data.id);
-          this.setState({ isLoader: false});
+          this.setState({ isLoader: false });
         } else {
-          this.props.onGetError(message);
-          this.setState({ isRedirect: false});
+          this.props.onGetError("Имя пользователя или пароль введены не верно");
+          this.setState({ isRedirect: false });
         }
       })
       .catch(e => console.log(e));
   };
-  
+
   handleSubmit = e => {
     e.preventDefault();
     this.setState({ isRedirect: true });
@@ -48,11 +48,12 @@ class Login extends Component {
   };
 
   render() {
+    const { isRedirect, isLoader, email, password } = this.state;
+    const { isOpenForm, messageError, onOut } = this.props;
+
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
     };
-
-    const { isRedirect, isLoader } = this.state;
 
     if (isRedirect) {
       return (
@@ -61,33 +62,20 @@ class Login extends Component {
     }
     return (
       <div>
-        {this.props.isOpenForm ? (
-          <React.Fragment>
-            <p>{this.props.message}</p>
-            <Link onClick={() => this.props.onOut() } to="/profile">Log in</Link>
-          </React.Fragment>
+        {isOpenForm ? (
+          <div>
+            <p>{messageError}</p>
+            <Link onClick={() => onOut()} to="/profile">
+              Log in
+            </Link>
+          </div>
         ) : (
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <input
-                type="email"
-                data-get-name={"email"}
-                value={this.state.email}
-                onChange={this.handleAthu}
-                placeholder="Введите email"
-              />
-            </div>
-            <div>
-              <input
-                data-get-name={"password"}
-                type="password"
-                value={this.state.password}
-                onChange={this.handleAthu}
-                placeholder="Введите пароль"
-              />
-            </div>
-            <input type="submit" />
-          </form>
+          <Form
+            onSubmit={this.handleSubmit}
+            email={email}
+            onChange={this.handleAthu}
+            password={password}
+          />
         )}
       </div>
     );
@@ -96,7 +84,7 @@ class Login extends Component {
 
 const mapStateProps = state => ({
   isOpenForm: state.getLogin.isOpenForm,
-  message: state.getLogin.message
+  messageError: state.getLogin.message
 });
 
 const mapDispatchProps = dispatch => ({
@@ -107,13 +95,14 @@ const mapDispatchProps = dispatch => ({
     dispatch({ type: "ERR_IN_LOGIN", payload: error });
   },
   onOut: () => {
-    dispatch({type: "OUT_IN_LOGIN"});
+    dispatch({ type: "OUT_IN_LOGIN" });
   }
 });
 
-// Login.propTypes = {
-//   login: PropTypes.string.isRequired,
-//   password: PropTypes.number.isRequired
-// };
+Login.propsTypes = {
+  isOpenForm: PropTypes.bool,
+  messageError: PropTypes.string.isRequired,
+  onOut: PropTypes.func.isRequired
+};
 
 export default withRouter(connect(mapStateProps, mapDispatchProps)(Login));

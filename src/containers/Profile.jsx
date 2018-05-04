@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import {
   faVk,
@@ -11,8 +10,8 @@ import {
   faTwitch,
   faInternetExplorer
 } from "@fortawesome/fontawesome-free-brands";
-
 import axios from "axios";
+import PropTypes from "prop-types";
 
 class Profile extends Component {
   componentWillMount() {
@@ -41,36 +40,44 @@ class Profile extends Component {
     return lab.indexOf("web") == 0 ? `internet-explorer` : lab;
   };
   render() {
-    return <div>
-        {this.props.isOpenUserInfo ? <React.Fragment>
+    const {
+      isOpenUserInfo,
+      messageError,
+      city,
+      languages,
+      social
+    } = this.props;
+    return (
+      <div>
+        {isOpenUserInfo ? (
+          <React.Fragment>
             {" "}
-            <p>{this.props.message}</p>{" "}
-          </React.Fragment> : <div>
-            Город: {this.props.city} <br />
+            <p>{messageError}</p>{" "}
+          </React.Fragment>
+        ) : (
+          <div>
+            Город: {city} <br />
             Знание языков:
-            <ul>
-              {this.props.languages.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
+            <ul>{languages.map((item, i) => <li key={i}>{item}</li>)}</ul>
             <div>
               Ссылки:
-              {this.props.social.map((item, i) => (
+              {social.map((item, i) => (
                 <a
                   style={{ margin: "2px" }}
-                key={i}
+                  key={i}
                   href={this.getURL(item.link)}
                   target="_blank"
                 >
-                  {console.log(item.label)}
                   <FontAwesomeIcon
                     icon={["fab", `${this.getLabel(item.label)}`]}
                   />
                 </a>
               ))}
             </div>
-          </div>}
-      </div>;
+          </div>
+        )}
+      </div>
+    );
   }
 }
 
@@ -78,7 +85,7 @@ const mapStateProps = state => ({
   city: state.getUserInfo.city,
   languages: state.getUserInfo.languages,
   social: state.getUserInfo.social,
-  message: state.getUserInfo.message,
+  messageError: state.getUserInfo.message,
   isOpenUserInfo: state.getUserInfo.isOpenUserInfo
 });
 
@@ -95,5 +102,13 @@ const mapDispatchProps = dispatch => ({
     dispatch({ type: "GET_USER_INFO_ERROR", error });
   }
 });
+
+Profile.propTypes = {
+  isOpenUserInfo: PropTypes.bool,
+  messageError: PropTypes.string,
+  city: PropTypes.string,
+  languages: PropTypes.array,
+  social: PropTypes.array
+};
 
 export default connect(mapStateProps, mapDispatchProps)(Profile);
