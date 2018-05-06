@@ -15,9 +15,9 @@ import PropTypes from "prop-types";
 
 class Profile extends Component {
   componentWillMount() {
-    this.getId(this.props.id);
+    this.getUserInfo(this.props.id);
   }
-  getId = id => {
+  getUserInfo = id => {
     const url = `https://mysterious-reef-29460.herokuapp.com/api/v1/user-info/${id}`;
     axios
       .get(url)
@@ -33,21 +33,16 @@ class Profile extends Component {
       .catch(e => console.log(e));
   };
 
-  getURL = url => {
+  changeLinkUrl = url => {
     return url.indexOf("http") !== 0 ? `https://${url}` : url;
   };
-  getLabel = lab => {
+  changeLabel = lab => {
     return lab.indexOf("web") == 0 ? `internet-explorer` : lab;
   };
   render() {
-    const {
-      isOpenUserInfo,
-      messageError,
-      city,
-      languages,
-      social
-    } = this.props;
-    return <div>
+    const { isOpenUserInfo, messageError, city, languages, social } = this.props;
+    return (
+    <div>
         {isOpenUserInfo ? <React.Fragment>
             {" "}
             <p>{messageError}</p>{" "}
@@ -61,17 +56,17 @@ class Profile extends Component {
                 <a
                   style={{ margin: "2px" }}
                   key={i}
-                  href={this.getURL(item.link)}
+                  href={this.changeLinkUrl(item.link)}
                   target="_blank"
                 >
                   <FontAwesomeIcon
-                    icon={["fab", `${this.getLabel(item.label)}`]}
+                    icon={["fab", `${this.changeLabel(item.label)}`]}
                   />
                 </a>
               ))}
             </div>
           </div>}
-      </div>;
+      </div>)
   }
 }
 

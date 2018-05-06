@@ -61,7 +61,6 @@ class Login extends Component {
       );
     }
     return (
-  
       <div>
         {isOpenForm ? <div>
             <p>{messageError}</p>
