@@ -1,11 +1,49 @@
+import axios from "axios";
 
+const onGetLogin = (id) => ({
+    type: "ADD_ISLOGIN",
+    payload: id
+})
 
-// export function Ath(login, password) {
-//   window.localStorage.setItem("login", login);
-//   window.localStorage.setItem("password", password);
-//   const url = "https://mysterious-reef-29460.herokuapp.com/api/v1/validate";
-//   axios
-//     .post(url, { email: login, password })
-//     .then(res => (res.data.status === "ok" ? res.data.data.id : false));
-//   // return data.login === login && data.password == password ? true : false;
-// }
+const onGetError = (error) => ({
+    type: "ERR_IN_LOGIN",
+    payload: error
+})
+const notServer = (text) => ({
+    type: "NOT_SERVER",
+    payload: text
+})
+
+export const getUserLogin = (url, email, password) => dispatch => {
+    dispatch({
+        type: "LOADER",
+        payload: true
+    });
+    return axios
+        .post(url, {
+            email,
+            password
+        })
+        .then(res => {
+            const {
+                data,
+                status
+            } = res.data;
+            if (status === "ok") {
+                dispatch(onGetLogin(data.id));
+                // this.setState({
+                //     isLoader: false
+                // });
+            } else {
+                dispatch(onGetError("Имя пользователя или пароль введены не верно"));
+                // this.setState({
+                //     isRedirect: false
+                // });
+                console.log( 'hwkk')
+            }
+        })
+        .catch(e =>
+            dispatch(notServer("Нет подключения, попробуйте заново"))
+        );
+
+}

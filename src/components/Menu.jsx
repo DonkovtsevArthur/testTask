@@ -1,34 +1,33 @@
 import React from "react";
 import { NavLink, withRouter, Link } from "react-router-dom";
-
 import { connect } from "react-redux";
 
 
-const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px'  };
+const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px' };
 
-const Menu = ({isOpen, onOut}) => {
+const Menu = ({ isOpen, onOut }) => {
   return <ul>
-      <li style={styleLink}>
-        <NavLink exact to="/">
-          Home
+    <li style={styleLink}>
+      <NavLink exact to="/">
+        Home
         </NavLink>
-      </li>
-      <li style={styleLink}>
-        <NavLink to="/news">News</NavLink>
-      </li>
-      <li style={styleLink}>
-        <NavLink to="/profile">Profile</NavLink>
-      </li>
-      {isOpen ? <li style={styleLink}>
-          <Link onClick={() => onOut()} to="/login">
-            Выход
+    </li>
+    <li style={styleLink}>
+      <NavLink to="/news">News</NavLink>
+    </li>
+    <li style={styleLink}>
+      <NavLink to="/profile">Profile</NavLink>
+    </li>
+    {isOpen ? <li style={styleLink}>
+      <Link onClick={() => onOut()} to="/login">
+        Выход
           </Link>
-        </li> : ""}
-    </ul>;
+    </li> : ""}
+  </ul>;
 };
 
 const mapStateProps = state => ({
-  isOpen : state.getLogin.isOpen
+  isOpen: state.getLogin.isOpen
 })
 
 const mapDispatchProps = dispatch => ({
