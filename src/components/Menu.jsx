@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink, withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+import { onOut } from "../actions";
+import { bindActionCreators } from "redux";
 
 const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px' };
 
@@ -30,10 +31,8 @@ const mapStateProps = state => ({
   ...state.getLogin
 })
 
-const mapDispatchProps = dispatch => ({
-  onOut: () => {
-    dispatch({ type: "DEFAULT" });
-  }
-});
+const mapDispatchProps = dispatch => bindActionCreators( { onOut }, dispatch)
+  
+
 
 export default withRouter(connect(mapStateProps, mapDispatchProps)(Menu));

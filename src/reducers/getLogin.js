@@ -32,7 +32,6 @@ export default function getLogin(state = initialState, action) {
         message: action.payload, 
         status: 'not_server'
       };
-   
     default:
       return state;
   }

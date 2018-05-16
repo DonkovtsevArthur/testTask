@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import PrivateRoute from "../components/PrivateRoute";
 import Form from "../components/Form";
-import { getUserLogin } from "../actions";
+import { getUserLogin, onOut } from "../actions";
 
 class Login extends Component {
   state = {
@@ -15,7 +15,7 @@ class Login extends Component {
     password: "",
     isOpen: false,
   };
-  handleAthu = e => {
+  handleAuth = e => {
     const value = e.target.value;
     const setName = e.target.dataset.getName;
 
@@ -49,7 +49,7 @@ class Login extends Component {
         )
         break;
       default:
-        return <Form onSubmit={this.handleSubmit} email={this.state.email} onChange={this.handleAthu} password={this.state.password} />;
+        return <Form onSubmit={this.handleSubmit} email={this.state.email} onChange={this.handleAuth} password={this.state.password} />;
     }
   }
  
@@ -79,9 +79,7 @@ const mapStateProps = state => ({
 const matchDispatchProps = dispatch =>
   bindActionCreators({
     getUserLogin,
-    onOut: () => {
-      dispatch({ type: "DEFAULT" });
-    }
+    onOut
   }, dispatch);
 
 

@@ -25,12 +25,8 @@ PrivateRoute.propTypes = {
   password: PropTypes.number
 };
 
-const mapDispatchToProps = dispath => ({
-  onGetOpen: name => {
-    dispath({ type: "ADD_ISLOGIN", payload: name });
-  }
-});
+
 
 export default withRouter(
-  connect(mapStateProps, mapDispatchToProps)(PrivateRoute)
+  connect(mapStateProps)(PrivateRoute)
 );
