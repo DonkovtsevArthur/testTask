@@ -6,3 +6,4 @@ export const GET_USER_INFO_ERROR = "GET_USER_INFO_ERROR";
 
 export const NOT_SERVER = 'NOT_SERVER';
 export const LOADER = 'LOADER';
+export const REQUEST = 'REQUEST';

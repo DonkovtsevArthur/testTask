@@ -13,8 +13,6 @@ class Login extends Component {
   state = {
     email: "",
     password: "",
-    isRedirect: false
-
   };
   handleAthu = e => {
     const value = e.target.value;
@@ -30,20 +28,17 @@ class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const url = "https://mysterious-reef-29460.herokuapp.com/api/v1/validate";
-
-
-    this.setState({ isRedirect: true });
     this.props.getUserLogin(url, this.state.email, this.state.password);
-    if (this.props.isOpenForm) {
-      this.setState({ isRedirect: false });
-    }
 
   };
-
+  componentDidMount() {
+  
+   
+  }
   render() {
 
-    const { isRedirect, email, password } = this.state;
-    const { isOpenForm, messageError, onOut, isOpen} = this.props;
+    const { email, password } = this.state;
+    const { isOpenForm, message, isOpen, isRedirect } = this.props;
 
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
@@ -51,15 +46,15 @@ class Login extends Component {
 
     if (isRedirect) {
       return <div>
-        {isOpen ? <Redirect to={from} /> : <CircularProgress />}
+        { isOpen ? <Redirect to={from} /> : <CircularProgress /> }
       </div>;
     }
     return (
       <div>
         {isOpenForm ? (
           <div>
-            <p>{messageError}</p>
-            <Link onClick={() => onOut()} to="/profile">
+            <p>{message}</p>
+            <Link onClick={this.props.onOut} to="/profile">
               Log in
             </Link>
           </div>
@@ -77,27 +72,22 @@ class Login extends Component {
 }
 
 const mapStateProps = state => ({
-  isOpenForm: state.getLogin.isOpenForm,
-  isOpen: state.getLogin.isOpen,
-  messageError: state.getLogin.message,
-  isLoader: state.getLogin.isLoader
+  ...state.getLogin
 });
 
 const matchDispatchProps = dispatch =>
   bindActionCreators({
     getUserLogin,
-
     onOut: () => {
       dispatch({ type: "OUT_IN_LOGIN" });
     }
-
   }, dispatch);
 
 
 
 Login.propsTypes = {
   isOpenForm: PropTypes.bool,
-  messageError: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
   onOut: PropTypes.func.isRequired
 };
 

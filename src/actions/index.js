@@ -16,34 +16,24 @@ const notServer = (text) => ({
 
 export const getUserLogin = (url, email, password) => dispatch => {
     dispatch({
-        type: "LOADER",
-        payload: true
-    });
-    return axios
-        .post(url, {
-            email,
-            password
-        })
-        .then(res => {
-            const {
-                data,
-                status
-            } = res.data;
-            if (status === "ok") {
-                dispatch(onGetLogin(data.id));
-                // this.setState({
-                //     isLoader: false
-                // });
-            } else {
-                dispatch(onGetError("Имя пользователя или пароль введены не верно"));
-                // this.setState({
-                //     isRedirect: false
-                // });
-                console.log( 'hwkk')
-            }
-        })
-        .catch(e =>
-            dispatch(notServer("Нет подключения, попробуйте заново"))
-        );
+        type: 'REQUEST'       
+    })
+    try {
+        axios.post(url, { email, password })
+            .then(res => {
+                const { data, status } = res.data;
+            
+                if (status === "ok") {
+                    dispatch(onGetLogin(data.id));
+ 
+                } else {
+                    dispatch(onGetError("Имя пользователя или пароль введены не верно"));
+                }
+            })
+            .catch(e => dispatch(onGetError("Имя пользователя или пароль введены не верно"))
+            );
+    } catch (error) {
+        dispatch(notServer("Нет подключения, попробуйте заново"))
+    }
 
 }
