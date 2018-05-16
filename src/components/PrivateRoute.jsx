@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-const PrivateRoute = ({ component: Profile, isOpen, id,  ...rest }) => (
+const PrivateRoute = ({ component: Profile, isOpenProfile, id,  ...rest }) => (
   <Route
     {...rest}
     render={() =>
-      isOpen ? (
+      isOpenProfile ? (
         <Profile id={id} />
       ) : (
         <Redirect to={{ pathname: "/login" }} />
@@ -17,8 +17,7 @@ const PrivateRoute = ({ component: Profile, isOpen, id,  ...rest }) => (
 );
 
 const mapStateProps = state => ({
-  isOpen: state.getLogin.isOpen,
-  id: state.getLogin.id
+  ...state.getLogin
 });
 
 PrivateRoute.propTypes = {

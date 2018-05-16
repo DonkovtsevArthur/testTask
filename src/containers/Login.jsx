@@ -13,6 +13,7 @@ class Login extends Component {
   state = {
     email: "",
     password: "",
+    isOpen: false,
   };
   handleAthu = e => {
     const value = e.target.value;
@@ -23,49 +24,52 @@ class Login extends Component {
       [setName]: value
     }));
   };
-  
 
+  
   handleSubmit = e => {
     e.preventDefault();
     const url = "https://mysterious-reef-29460.herokuapp.com/api/v1/validate";
     this.props.getUserLogin(url, this.state.email, this.state.password);
-
+    
   };
-  componentDidMount() {
-  
-   
+  getList = () => {
+    switch (this.props.status) {
+      case "request":
+       return  <CircularProgress />;
+        break;
+
+      case "not_server":
+        return (
+          <div>
+            <p>{this.props.message}</p>
+            <Link onClick={this.props.onOut} to="/profile">
+              Log in {" "}
+            </Link>
+            {" "}
+          </div>
+        )
+        break;
+      default:
+        return <Form onSubmit={this.handleSubmit} email={this.state.email} onChange={this.handleAthu} password={this.state.password} />;
+    }
   }
+ 
   render() {
 
     const { email, password } = this.state;
-    const { isOpenForm, message, isOpen, isRedirect } = this.props;
+    const { isOpenForm, message, isOpen, isRedirect  } = this.props;
 
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
     };
 
-    if (isRedirect) {
-      return <div>
-        { isOpen ? <Redirect to={from} /> : <CircularProgress /> }
-      </div>;
+    if(isRedirect){ 
+      return <Redirect to={from} />
     }
+ 
     return (
       <div>
-        {isOpenForm ? (
-          <div>
-            <p>{message}</p>
-            <Link onClick={this.props.onOut} to="/profile">
-              Log in
-            </Link>
-          </div>
-        ) : (
-            <Form
-              onSubmit={this.handleSubmit}
-              email={email}
-              onChange={this.handleAthu}
-              password={password}
-            />
-          )}
+        {this.getList()}
       </div>
     );
   }
@@ -79,7 +83,7 @@ const matchDispatchProps = dispatch =>
   bindActionCreators({
     getUserLogin,
     onOut: () => {
-      dispatch({ type: "OUT_IN_LOGIN" });
+      dispatch({ type: "DEFAULT" });
     }
   }, dispatch);
 

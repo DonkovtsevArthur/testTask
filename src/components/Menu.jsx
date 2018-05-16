@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px' };
 
-const Menu = ({ isOpen, onOut }) => {
+const Menu = ({ isOpenProfile, onOut }) => {
   return <ul>
     <li style={styleLink}>
       <NavLink exact to="/">
@@ -18,21 +18,21 @@ const Menu = ({ isOpen, onOut }) => {
     <li style={styleLink}>
       <NavLink to="/profile">Profile</NavLink>
     </li>
-    {isOpen ? <li style={styleLink}>
+    {isOpenProfile ? <li style={styleLink}>
       <Link onClick={() => onOut()} to="/login">
         Выход
           </Link>
-    </li> : ""}
+    </li> : " "}
   </ul>;
 };
 
 const mapStateProps = state => ({
-  isOpen: state.getLogin.isOpen
+  ...state.getLogin
 })
 
 const mapDispatchProps = dispatch => ({
   onOut: () => {
-    dispatch({ type: "OUT_IN_LOGIN" });
+    dispatch({ type: "DEFAULT" });
   }
 });
 

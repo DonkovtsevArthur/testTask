@@ -2,7 +2,7 @@ import axios from "axios";
 
 const onGetLogin = (id) => ({
     type: "ADD_ISLOGIN",
-    payload: id
+    payload: id,
 })
 
 const onGetError = (error) => ({
@@ -18,7 +18,6 @@ export const getUserLogin = (url, email, password) => dispatch => {
     dispatch({
         type: 'REQUEST'       
     })
-    try {
         axios.post(url, { email, password })
             .then(res => {
                 const { data, status } = res.data;
@@ -30,10 +29,6 @@ export const getUserLogin = (url, email, password) => dispatch => {
                     dispatch(onGetError("Имя пользователя или пароль введены не верно"));
                 }
             })
-            .catch(e => dispatch(onGetError("Имя пользователя или пароль введены не верно"))
+            .catch(e => dispatch(notServer("Нет подключения, попробуйте заново"))
             );
-    } catch (error) {
-        dispatch(notServer("Нет подключения, попробуйте заново"))
-    }
-
 }

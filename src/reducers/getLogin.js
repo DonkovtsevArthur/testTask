@@ -2,40 +2,39 @@ import * as type from "../constants/ActionTypes";
 
 const initialState = {
   id: "",
-  isOpen: false,
-  isOpenForm: false,
+  status: '',
   message: "",
-  isRedirect: false
+  isRedirect: false,
+  isOpenProfile: false
 };
 
 export default function getLogin(state = initialState, action) {
   switch (action.type) {
+    case type.DEFAULT:
+      return { ...state,
+        status: '', 
+        isRedirect: false,
+        isOpenProfile: false
+      };
     case type.REQUEST:
       return { ...state,
-        isOpen: false,
-        isRedirect: false
+         status: 'request',
       };
     case type.ADD_ISLOGIN:
       return { ...state,
         id: action.payload,
-        isOpen: true,
-        isRedirect: true
+        isRedirect: true,
+        isOpenProfile: true
+        
       };
     case type.ERR_IN_LOGIN:
       return { ...state,
-        message: action.payload,
-        isOpenForm: true,
-        isOpen: false,
-      };
-    case type.OUT_IN_LOGIN:
-      return { ...state,
-        isOpenForm: false,
+        message: action.payload,     
       };
     case type.NOT_SERVER:
       return { ...state,
         message: action.payload,
-        isOpenForm: true,
-        isOpen: false
+        status: 'not_server'
       };
 
     default:
