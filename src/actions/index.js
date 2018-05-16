@@ -9,10 +9,7 @@ const onGetError = (error) => ({
     type: "ERR_IN_LOGIN",
     payload: error
 })
-const notServer = (text) => ({
-    type: "NOT_SERVER",
-    payload: text
-})
+
 
 export const getUserLogin = (url, email, password) => dispatch => {
     dispatch({
@@ -29,6 +26,6 @@ export const getUserLogin = (url, email, password) => dispatch => {
                     dispatch(onGetError("Имя пользователя или пароль введены не верно"));
                 }
             })
-            .catch(e => dispatch(notServer("Нет подключения, попробуйте заново"))
+            .catch(e => dispatch(onGetError("Нет подключения, попробуйте ещё"))
             );
 }

@@ -37,7 +37,6 @@ class Login extends Component {
       case "request":
        return  <CircularProgress />;
         break;
-
       case "not_server":
         return (
           <div>
@@ -55,9 +54,7 @@ class Login extends Component {
   }
  
   render() {
-
-    const { email, password } = this.state;
-    const { isOpenForm, message, isOpen, isRedirect  } = this.props;
+    const { isRedirect  } = this.props;
 
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }

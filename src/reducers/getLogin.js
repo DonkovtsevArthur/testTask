@@ -29,14 +29,10 @@ export default function getLogin(state = initialState, action) {
       };
     case type.ERR_IN_LOGIN:
       return { ...state,
-        message: action.payload,     
-      };
-    case type.NOT_SERVER:
-      return { ...state,
-        message: action.payload,
+        message: action.payload, 
         status: 'not_server'
       };
-
+   
     default:
       return state;
   }
