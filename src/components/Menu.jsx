@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { onOut } from "../actions";
+import { onOut } from "../actionCreators/login";
 import { bindActionCreators } from "redux";
 
 const styleLink = { listStyleType: "none", display: 'inline-block', marginLeft: '10px' };

@@ -25,8 +25,6 @@ PrivateRoute.propTypes = {
   password: PropTypes.number
 };
 
-
-
 export default withRouter(
   connect(mapStateProps)(PrivateRoute)
 );

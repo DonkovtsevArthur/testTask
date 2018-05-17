@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
@@ -10,29 +11,14 @@ import {
   faTwitch,
   faInternetExplorer
 } from "@fortawesome/fontawesome-free-brands";
-import axios from "axios";
+import { getUserInfo } from "../actionCreators/profile";
 import PropTypes from "prop-types";
 
 class Profile extends Component {
-  componentWillMount() {
-    this.getUserInfo(this.props.id);
+  componentDidMount() {
+    this.props.getUserInfo(this.props.id);
   }
-  getUserInfo = id => {
-    const url = `https://mysterious-reef-29460.herokuapp.com/api/v1/user-info/${id}`;
-    axios
-      .get(url)
-      .then(res => {
-        const { status, message } = res.data;
-        if (status === "ok") {
-          const { city, languages, social } = res.data.data;
-          this.props.onGetInfo(city, languages, social);
-        } else {
-          this.props.onGetInfoError(message);
-        }
-      })
-      .catch(e => console.log(e));
-  };
-
+  // сейчас уже эти функции не актуальны, но оставил
   changeLinkUrl = url => {
     return url.indexOf("http") !== 0 ? `https://${url}` : url;
   };
@@ -43,10 +29,10 @@ class Profile extends Component {
     const { isOpenUserInfo, messageError, city, languages, social } = this.props;
     return (
     <div>
-        {isOpenUserInfo ? <React.Fragment>
+        {isOpenUserInfo ? <div>
             {" "}
             <p>{messageError}</p>{" "}
-          </React.Fragment> : <div>
+          </div> : <div>
             Город: {city} <br />
             Знание языков:
             <ul>{languages.map((item, i) => <li key={i}>{item}</li>)}</ul>
@@ -78,19 +64,7 @@ const mapStateProps = state => ({
   isOpenUserInfo: state.getUserInfo.isOpenUserInfo
 });
 
-const mapDispatchProps = dispatch => ({
-  onGetInfo: (city, languages, social) => {
-    dispatch({
-      type: "GET_USER_INFO",
-      city,
-      languages,
-      social
-    });
-  },
-  onGetInfoError: error => {
-    dispatch({ type: "GET_USER_INFO_ERROR", error });
-  }
-});
+const mapDispatchProps = dispatch => bindActionCreators({ getUserInfo }, dispatch)
 
 Profile.propTypes = {
   isOpenUserInfo: PropTypes.bool,

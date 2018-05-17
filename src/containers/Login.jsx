@@ -7,13 +7,12 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import PrivateRoute from "../components/PrivateRoute";
 import Form from "../components/Form";
-import { getUserLogin, onOut } from "../actions";
+import { getUserLogin, onOut } from "../actionCreators/login";
 
 class Login extends Component {
   state = {
     email: "",
     password: "",
-    isOpen: false,
   };
   handleAuth = e => {
     const value = e.target.value;
@@ -25,17 +24,16 @@ class Login extends Component {
     }));
   };
 
-  
   handleSubmit = e => {
     e.preventDefault();
     const url = "https://mysterious-reef-29460.herokuapp.com/api/v1/validate";
     this.props.getUserLogin(url, this.state.email, this.state.password);
-    
   };
+
   getList = () => {
     switch (this.props.status) {
       case "request":
-       return  <CircularProgress />;
+        return <CircularProgress />;
         break;
       case "not_server":
         return (
@@ -52,18 +50,17 @@ class Login extends Component {
         return <Form onSubmit={this.handleSubmit} email={this.state.email} onChange={this.handleAuth} password={this.state.password} />;
     }
   }
- 
-  render() {
-    const { isRedirect  } = this.props;
 
+  render() {
+    const { isRedirect } = this.props;
     const { from } = this.props.location.state || {
       from: { pathname: "/profile" }
     };
 
-    if(isRedirect){ 
+    if (isRedirect) {
       return <Redirect to={from} />
     }
- 
+
     return (
       <div>
         {this.getList()}
@@ -85,7 +82,7 @@ const matchDispatchProps = dispatch =>
 
 
 Login.propsTypes = {
-  isOpenForm: PropTypes.bool,
+  status: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   onOut: PropTypes.func.isRequired
 };
