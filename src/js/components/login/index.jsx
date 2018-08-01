@@ -4,10 +4,8 @@ import { Redirect, withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { CircularProgress } from "material-ui";
 import PropTypes from "prop-types";
-import axios from "axios";
-import PrivateRoute from "../components/PrivateRoute";
-import Form from "../components/Form";
-import { getUserLogin, onOut } from "../actionCreators/login";
+import Form from "./form";
+import { getUserLogin, onOut } from "../../../store/login/action";
 
 class Login extends Component {
   state = {

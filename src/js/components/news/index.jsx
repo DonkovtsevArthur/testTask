@@ -18,7 +18,7 @@ class News extends Component {
     isLoader: true
   };
 
-  componentDidMount() {
+ componentDidMount = () => {
     const url = `https://mysterious-reef-29460.herokuapp.com/api/v1/news `;
     axios.get(url).then(el => {
       this.setState({
@@ -41,7 +41,7 @@ class News extends Component {
             <span>Всего новостей: {sum}</span>
             <ul style={{ paddingLeft: "0px" }}>
               {newsContent.map((item, index) => (
-                <li style={newsLi} key={index}>
+                <li style={newsLi} key={`${item}-${index}`}>
                   <h2>{item.title}</h2>
 
                   <p>{item.title}.</p>

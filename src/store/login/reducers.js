@@ -1,4 +1,4 @@
-import * as type from "../constants/ActionTypes";
+import * as type from "./constants";
 
 const initialState = {
   id: "",

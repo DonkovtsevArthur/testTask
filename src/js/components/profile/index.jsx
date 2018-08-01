@@ -11,20 +11,14 @@ import {
   faTwitch,
   faInternetExplorer
 } from "@fortawesome/fontawesome-free-brands";
-import { getUserInfo } from "../actionCreators/profile";
+import { getUserInfo } from "../../../store/profile/action";
 import PropTypes from "prop-types";
 
 class Profile extends Component {
-  componentDidMount() {
+  componentDidMount = () =>  {
     this.props.getUserInfo(this.props.id);
   }
-  // сейчас уже эти функции не актуальны, но оставил
-  changeLinkUrl = url => {
-    return url.indexOf("http") !== 0 ? `https://${url}` : url;
-  };
-  changeLabel = lab => {
-    return lab.indexOf("web") == 0 ? `internet-explorer` : lab;
-  };
+
   render() {
     const { isOpenUserInfo, messageError, city, languages, social } = this.props;
     return (
@@ -42,11 +36,11 @@ class Profile extends Component {
                 <a
                   style={{ margin: "2px" }}
                   key={i}
-                  href={this.changeLinkUrl(item.link)}
+                  href={item.link}
                   target="_blank"
                 >
                   <FontAwesomeIcon
-                    icon={["fab", `${this.changeLabel(item.label)}`]}
+                    icon={["fab", `${item.label}`]}
                   />
                 </a>
               ))}
